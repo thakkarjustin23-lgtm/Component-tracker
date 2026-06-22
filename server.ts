@@ -1002,32 +1002,32 @@ Return your response strictly in valid JSON format matching this schema:
         return res.status(400).json({ error: "Procurement lookup query is required." });
       }
 
-      const prompt = `You are an expert parts procurement specialist for high school and university engineering robotics clubs.
+      const prompt = `You are an expert parts procurement specialist for high school, college, and university engineering robotics clubs in India.
 The user is looking to acquire: "${query}"
 
-Find three or four legitimate, real-world educational or official distributors where this component typically is sold (e.g., SparkFun, Adafruit, DigiKey, Mouser, Amazon Business, RobotShop).
+Find three or four legitimate, real-world educational or official electronics/robotics distributors in India or that service Indian academic labs (e.g., Robu.in, Quartz Components, Robokits India, Tanotis, Evelta, Makerlab, Amazon India).
 Compare them side-by-side with estimates for:
-1. Current standard educational rate (in USD)
-2. Normal delivery speed to US high schools
-3. General real-time availability indicator ("In Stock", "Backordered", "Low Inventory")
-4. Pros & Cons of purchasing from this specific seller (academic support, packaging quality, min order amounts)
+1. Current standard educational rate (in Indian Rupees INR, ₹)
+2. Normal delivery speed to school campuses in India (e.g., typical express state transit times)
+3. General real-time availability indicator ("In Stock", "Out of Stock", "Limited Stock")
+4. Pros & Cons of purchasing from this specific seller (Academic discount rates, genuine components, Cash on Delivery support, local custom handling)
 
-Synthesize a helpful, professional purchasing recommendation tailored to class budget constraints.
+Synthesize a helpful, professional purchasing recommendation tailored to Indian school budget limits and procurement compliance guidelines.
 
 Return your response strictly in valid JSON format matching this schema:
 {
   "results": [
     {
-      "vendor": "Name of Vendor (e.g. Adafruit Industries)",
-      "price": "Standard rate or bulk package price",
-      "shipping": "Estimated transit timeframe",
+      "vendor": "Name of Vendor in India (e.g. Robu.in / Quartz Components)",
+      "price": "Standard rate or bulk package price in INR (e.g., ₹450)",
+      "shipping": "Estimated domestic transit timeframe (e.g. 2-4 Days)",
       "availability": "Stock tier description",
       "url": "Vendor homepage or general portal link",
-      "pros": "Advantages of this vendor",
-      "cons": "Disadvantages of this vendor"
+      "pros": "Advantages of this vendor for Indian educators",
+      "cons": "Disadvantages of this vendor for Indian educators"
     }
   ],
-  "schoolRecommendation": "A short, elegant summary recommendation identifying who is the best choice (e.g. Adafruit for guides, DigiKey for bulk)."
+  "schoolRecommendation": "A short, elegant summary recommendation identifying who is the best choice (e.g. Robu.in for overall speed and inventory, Quartz Components for student guide support)."
 }`;
 
       try {
@@ -1069,7 +1069,7 @@ Return your response strictly in valid JSON format matching this schema:
       } catch (aiErr: any) {
         console.warn("Pricing comparison fallback active:", aiErr.message);
 
-        // Smart database comparison fallback based on keywords
+        // Smart database comparison fallback based on keywords localized in India
         const lowQuery = query.toLowerCase();
         let fallbackResults: any[] = [];
         let rec = "";
@@ -1077,96 +1077,96 @@ Return your response strictly in valid JSON format matching this schema:
         if (lowQuery.includes("arduino") || lowQuery.includes("uno") || lowQuery.includes("microcontroller") || lowQuery.includes("esp32") || lowQuery.includes("pico")) {
           fallbackResults = [
             {
-              vendor: "Adafruit Industries",
-              price: "$27.60 (Official R3 Board)",
-              shipping: "3-5 Business Days (Ground)",
-              availability: "In Stock (100+)",
-              url: "https://www.adafruit.com",
-              pros: "100% genuine hardware; stellar educational slide-decks and class materials.",
-              cons: "Flat rate shipping is slightly of high cost for small standalone boxes."
+              vendor: "Robu.in (Macfos)",
+              price: "₹495 (Uno R3 Compatible clone) / ₹2,350 (Official Uno R4)",
+              shipping: "2-4 Business Days (Express dispatch across India)",
+              availability: "In Stock (500+ units)",
+              url: "https://robu.in",
+              pros: "Exceedingly rapid shipping; massive localized stock of boards, sensors, and robotics mechanical hardware.",
+              cons: "Free shipping requires a minimum order threshold of ₹999."
             },
             {
-              vendor: "DigiKey Electronics",
-              price: "$25.90 (Official R4 Minima)",
-              shipping: "2-3 Days Saver Delivery",
-              availability: "In Stock (5000+ units)",
-              url: "https://www.digikey.com",
-              pros: "Gigantic raw reserve volume; offers massive bulk discount rate for class size bundles.",
-              cons: "Confusing engineering grid web panel for junior students."
+              vendor: "Quartz Components",
+              price: "₹450 (High Quality Uno R3 Board Clone)",
+              shipping: "1-3 Business Days (Express Delivery)",
+              availability: "In Stock (200+ units)",
+              url: "https://quartzcomponents.com",
+              pros: "Fabulous catalog geared towards students, highly responsive educational customer team, guides ready.",
+              cons: "Fewer heavy mechanical or structural parts (e.g., structural aluminum extrusions)."
             },
             {
-              vendor: "Amazon Business Education",
-              price: "$17.40 (Compatible generic board bundle)",
-              shipping: "1-2 Days (Prime Express)",
-              availability: "In Stock",
-              url: "https://www.amazon.com",
-              pros: "Significantly cheaper; immediate prime transit speed.",
-              cons: "Slight build board variations; lacks academic guidance sheets."
+              vendor: "Robokits India",
+              price: "₹480 (Sturdy Compatible Uno R3)",
+              shipping: "3-5 Business Days (Shipped from Gujarat depot)",
+              availability: "In Stock (1000+ units)",
+              url: "https://robokits.co.in",
+              pros: "Pioneers in high-power motor drivers, wheels, chassis types and heavy components.",
+              cons: "Website configuration and grid layout is slightly dated for junior lab catalogs."
             }
           ];
-          rec = `For class cohorts, we highly recommend official Adafruit boards for safe beginner instruction due to their superb coding guides. If budget is extremely constrained, Amazon generic clones are a highly cost-efficient fallback.`;
+          rec = `For class cohorts in India, we recommend Robu.in or Quartz Components for easy, reliable microcontroller supply. If your project demands custom high-current motor drivers and metal wheels, Robokits India is an unmatched option.`;
         } else if (lowQuery.includes("sensor") || lowQuery.includes("ultrasonic") || lowQuery.includes("sonar") || lowQuery.includes("distance") || lowQuery.includes("gyro") || lowQuery.includes("imu")) {
           fallbackResults = [
             {
-              vendor: "SparkFun Electronics",
-              price: "$7.50 (HC-SR04 with STEMMA QT)",
-              shipping: "3 Business Days (Standard)",
-              availability: "In Stock",
-              url: "https://www.sparkfun.com",
-              pros: "Includes easy-solder modular connection heads, excellent junior hardware projects.",
-              cons: "A few cents more expensive than pure industrial headers."
+              vendor: "Robu.in (Macfos)",
+              price: "₹85 (HC-SR04 Ultrasonic Sensor Node)",
+              shipping: "2-4 Business Days",
+              availability: "In Stock (2000+ units)",
+              url: "https://robu.in",
+              pros: "Inexpensive bulk pricing, certified parts testing, and swift delivery to standard pins.",
+              cons: "Slight custom shipping overhead on single item cart totals."
             },
             {
-              vendor: "Adafruit Industries",
-              price: "$6.95 (Raw HC-SR04 sensor node)",
-              shipping: "3-5 Business Days (Ground)",
-              availability: "Low Stock Warning (24 left)",
-              url: "https://www.adafruit.com",
-              pros: "Amazing step-by-step logic tutorials, code libraries ready.",
-              cons: "Currently low on inventory."
+              vendor: "Quartz Components",
+              price: "₹95 (HC-SR04 Student Module)",
+              shipping: "1-3 Business Days Delivery",
+              availability: "In Stock (400+)",
+              url: "https://quartzcomponents.com",
+              pros: "Produces direct step-by-step videos, learning documentation, and clear connection sheets.",
+              cons: "Niche raw industrial automation sensor configurations might be absent."
             },
             {
-              vendor: "DigiKey Electronics",
-              price: "$4.80 (Bulk Industrial raw component)",
-              shipping: "2 Days Saver Delivery",
-              availability: "In Stock (10,000+)",
-              url: "https://www.digikey.com",
-              pros: "Cheapest raw pricing per unit, perfect for replacement stock packs.",
-              cons: "Does not include easy jumper cables; pins require manual soldering."
+              vendor: "Tanotis",
+              price: "₹380 (Imported SparkFun or Adafruit Original modules)",
+              shipping: "7-12 Business Days (Special Import)",
+              availability: "Ships from foreign partner storage",
+              url: "https://www.tanotis.com",
+              pros: "Enables direct import of original, authentic international brand sensor breakout modules.",
+              cons: "Long customs validation/delivery times and high price points."
             }
           ];
-          rec = `SparkFun offers the best integrated plug-and-play sensor units (STEMMA/Qwiic) which saves valuable lecture time. For replacement parts in raw electronics containers, DigiKey fits school budgeting perfectly.`;
+          rec = `Quartz Components offers the most clear learning materials for students during sensor deployment. For standard bulk lab replenish orders, Robu.in carries the most cost-effective local pricing.`;
         } else {
           fallbackResults = [
             {
-              vendor: "Adafruit Industries",
-              price: "$14.95",
+              vendor: "Robu.in (Macfos)",
+              price: "₹250 (Aggregate parts average)",
+              shipping: "2-4 Business Days",
+              availability: "In Stock",
+              url: "https://robu.in",
+              pros: "One-stop shop for motors, frames, LiPo batteries, and structural pieces in India.",
+              cons: "Requires selective bulk cart building to trigger free shipping benefits."
+            },
+            {
+              vendor: "Quartz Components",
+              price: "₹290",
+              shipping: "1-3 Business Days",
+              availability: "In Stock",
+              url: "https://quartzcomponents.com",
+              pros: "Great customer care, robust documentation and friendly community group forums.",
+              cons: "Primarily electronic DIY focused, lacks extreme structural robotics chassis items."
+            },
+            {
+              vendor: "Evelta Electronics",
+              price: "₹180 (Volume pricing on components & passive nodes)",
               shipping: "3-5 Business Days",
               availability: "In Stock",
-              url: "https://www.adafruit.com",
-              pros: "Top choice for educational guides, premium build materials.",
-              cons: "Slightly higher shipping fees on individual items."
-            },
-            {
-              vendor: "SparkFun Electronics",
-              price: "$13.50",
-              shipping: "3 Business Days (Ground)",
-              availability: "In Stock",
-              url: "https://www.sparkfun.com",
-              pros: "High school student friendly kits, durable connector rails.",
-              cons: "Bulk orders can take an extra day to process in depot."
-            },
-            {
-              vendor: "Mouser Electronics Group",
-              price: "$10.20 (Volume tier markdown)",
-              shipping: "2 Days Saver Delivery",
-              availability: "In Stock (2000+)",
-              url: "https://www.mouser.com",
-              pros: "Unbeatable wholesale bulk rates, original industrial warranties.",
-              cons: "Complex technical part coding searches required."
+              url: "https://www.evelta.com",
+              pros: "Incredible domestic choice for specialized ICs, connectors, resistors, and custom PCB elements.",
+              cons: "A highly complex industrial part catalog; is less amateur-programmer targeted."
             }
           ];
-          rec = `For class kits, Adafruit or SparkFun provide the best academic experience. If you are conducting a massive replenishment of missing lab bins, Mouser has the best bulk rate.`;
+          rec = `Robu.in serves as the most versatile robotics supply house in India for generic hardware items. If your students are looking for micro-ICs or industrial connector terminals, Evelta is an outstanding resource.`;
         }
 
         res.json({
