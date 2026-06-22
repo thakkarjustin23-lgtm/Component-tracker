@@ -8,11 +8,13 @@ interface CheckoutTabProps {
   components: Component[];
   onRefresh: () => void;
   onOpenDraftPanel: (checkout: Checkout) => void;
+  schoolId: string;
 }
 
-export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDraftPanel }: CheckoutTabProps) {
+export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDraftPanel, schoolId }: CheckoutTabProps) {
   const [filter, setFilter] = useState<"all" | "active" | "overdue" | "returned">("all");
   const [isCheckoutFormOpen, setIsCheckoutFormOpen] = useState(false);
+  const [successCreds, setSuccessCreds] = useState<{ code: string; passkey: string; studentName: string; isNew: boolean } | null>(null);
 
   // Form State
   const [componentId, setComponentId] = useState("");
@@ -56,11 +58,15 @@ export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDr
     try {
       const response = await fetch("/api/checkouts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-School-Id": schoolId
+        },
         body: JSON.stringify({ componentId, studentName, studentEmail, quantity, dueDate })
       });
 
       if (response.ok) {
+        const payload = await response.json();
         setIsCheckoutFormOpen(false);
         // Reset form
         setComponentId("");
@@ -68,6 +74,16 @@ export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDr
         setStudentEmail("");
         setQuantity(1);
         onRefresh();
+
+        // Save generated credentials
+        if (payload.studentCode) {
+          setSuccessCreds({
+            code: payload.studentCode,
+            passkey: payload.studentPasskey,
+            studentName,
+            isNew: payload.studentCreated
+          });
+        }
       } else {
         const err = await response.json();
         setFormError(err.error || "Failed to complete checkout.");
@@ -85,7 +101,12 @@ export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDr
     }
 
     try {
-      const res = await fetch(`/api/checkouts/${checkoutId}/return`, { method: "POST" });
+      const res = await fetch(`/api/checkouts/${checkoutId}/return`, { 
+        method: "POST",
+        headers: {
+          "X-School-Id": schoolId
+        }
+      });
       if (res.ok) {
         onRefresh();
       } else {
@@ -432,6 +453,55 @@ export default function CheckoutTab({ checkouts, components, onRefresh, onOpenDr
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+
+        {successCreds && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-sm bg-zinc-900 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-2xl relative text-left"
+            >
+              <div className="text-center space-y-4">
+                <div className="h-12 w-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mx-auto border border-emerald-500/10 font-bold text-lg">
+                  ✓
+                </div>
+
+                <div className="space-y-1">
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider font-mono">
+                    {successCreds.isNew ? "✨ New Student Registered!" : "✓ Loan Approved"}
+                  </h3>
+                  <p className="text-[11px] text-zinc-500">
+                    Give this login code and PIN passkey to <strong className="text-zinc-200">{successCreds.studentName}</strong> so they can connect to their personal terminal.
+                  </p>
+                </div>
+
+                <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 space-y-3 font-mono text-xs">
+                  <div className="flex justify-between items-center bg-zinc-900/60 p-2.5 rounded border border-zinc-850">
+                    <span className="text-zinc-500 text-[10px] uppercase">Access Code:</span>
+                    <span className="text-yellow-500 font-bold tracking-wider select-all">{successCreds.code}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-zinc-900/60 p-2.5 rounded border border-zinc-850">
+                    <span className="text-zinc-500 text-[10px] uppercase">Passkey PIN:</span>
+                    <span className="text-yellow-500 font-bold tracking-wider select-all">{successCreds.passkey}</span>
+                  </div>
+                </div>
+
+                <p className="text-[9px] text-zinc-600 leading-normal">
+                  The student can select the <strong className="text-zinc-400">Student Terminal</strong> at the top right, enter these security credentials, and track their deadlines.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => setSuccessCreds(null)}
+                  className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded-lg text-xs transition cursor-pointer"
+                >
+                  Write Down & Close
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

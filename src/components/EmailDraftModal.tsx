@@ -7,9 +7,10 @@ interface EmailDraftModalProps {
   checkout: Checkout | null;
   onClose: () => void;
   onSent: () => void;
+  schoolId: string;
 }
 
-export default function EmailDraftModal({ checkout, onClose, onSent }: EmailDraftModalProps) {
+export default function EmailDraftModal({ checkout, onClose, onSent, schoolId }: EmailDraftModalProps) {
   if (!checkout) return null;
 
   const [tone, setTone] = useState<"friendly" | "firm" | "parent">("friendly");
@@ -29,7 +30,10 @@ export default function EmailDraftModal({ checkout, onClose, onSent }: EmailDraf
     try {
       const res = await fetch("/api/alert/draft", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-School-Id": schoolId
+        },
         body: JSON.stringify({ checkoutId: checkout.id, tone })
       });
       if (res.ok) {
@@ -53,7 +57,10 @@ export default function EmailDraftModal({ checkout, onClose, onSent }: EmailDraf
     try {
       const res = await fetch(`/api/checkouts/${checkout.id}/notify`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-School-Id": schoolId
+        },
         body: JSON.stringify({ emailSubject: subject, emailBody: body })
       });
       if (res.ok) {

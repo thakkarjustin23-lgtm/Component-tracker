@@ -6,12 +6,13 @@ import { motion, AnimatePresence } from "motion/react";
 interface InventoryTabProps {
   components: Component[];
   onRefresh: () => void;
+  schoolId: string;
 }
 
 const CATEGORIES: LabCategory[] = ["Microcontrollers", "Sensors", "Actuators", "Power Supplies", "Tools", "Structural"];
 const CONDITIONS: ConditionType[] = ["Excellent", "Good", "Needs Attention"];
 
-export default function InventoryTab({ components, onRefresh }: InventoryTabProps) {
+export default function InventoryTab({ components, onRefresh, schoolId }: InventoryTabProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -71,7 +72,10 @@ export default function InventoryTab({ components, onRefresh }: InventoryTabProp
 
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-School-Id": schoolId
+        },
         body: JSON.stringify({ name, category, totalStock: Number(totalStock), location, condition, description })
       });
 
@@ -95,7 +99,12 @@ export default function InventoryTab({ components, onRefresh }: InventoryTabProp
     }
 
     try {
-      const res = await fetch(`/api/components/${comp.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/components/${comp.id}`, { 
+        method: "DELETE",
+        headers: {
+          "X-School-Id": schoolId
+        }
+      });
       if (res.ok) {
         onRefresh();
       } else {
