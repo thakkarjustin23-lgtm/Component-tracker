@@ -1,0 +1,156 @@
+{
+  "components": [
+    {
+      "id": "comp-1",
+      "name": "Arduino Uno R3 Starter Microcontroller",
+      "category": "Microcontrollers",
+      "totalStock": 15,
+      "availableStock": 11,
+      "location": "Cabinet A, Drawer 2",
+      "condition": "Excellent",
+      "description": "Standard microcontroller board based on the ATmega328P, popular for beginner hardware programming."
+    },
+    {
+      "id": "comp-2",
+      "name": "Raspberry Pi 4 Model B (4GB RAM)",
+      "category": "Microcontrollers",
+      "totalStock": 8,
+      "availableStock": 6,
+      "location": "Cabinet A, Drawer 4",
+      "condition": "Excellent",
+      "description": "Single-board computer with quad-core processor, dual micro-HDMI ports, and built-in Wi-Fi / Bluetooth."
+    },
+    {
+      "id": "comp-3",
+      "name": "Ultrasonic Distance Sensor HC-SR04",
+      "category": "Sensors",
+      "totalStock": 25,
+      "availableStock": 21,
+      "location": "Cabinet B, Drawer 1",
+      "condition": "Good",
+      "description": "Ultrasonic ranging module providing 2cm to 400cm of non-contact measurement."
+    },
+    {
+      "id": "comp-4",
+      "name": "MG996R High-Torque Metal Gear Servo",
+      "category": "Actuators",
+      "totalStock": 12,
+      "availableStock": 12,
+      "location": "Cabinet C, Drawer 3",
+      "condition": "Excellent",
+      "description": "Powerful servo motor with metal gearing, suitable for robotic arms, steering systems, and heavy mechanical joints."
+    },
+    {
+      "id": "comp-5",
+      "name": "11.1V 3S 2200mAh LiPo Battery Pack",
+      "category": "Power Supplies",
+      "totalStock": 6,
+      "availableStock": 4,
+      "location": "Cabinet D, Fireproof Safe",
+      "condition": "Good",
+      "description": "High-discharge rechargeable Lithium Polymer battery. Requires teacher-supervised charging."
+    },
+    {
+      "id": "comp-6",
+      "name": "Screwdriver and Hardware Assembly Kit",
+      "category": "Tools",
+      "totalStock": 10,
+      "availableStock": 9,
+      "location": "Cabinet E, Hooks",
+      "condition": "Needs Attention",
+      "description": "General purpose mechanical checkout kit containing magnetic screwdrivers, custom pliers, M3 screw assortment."
+    }
+  ],
+  "checkouts": [
+    {
+      "id": "chk-1",
+      "componentId": "comp-1",
+      "componentName": "Arduino Uno R3 Starter Microcontroller",
+      "studentName": "Alex Rivera",
+      "studentEmail": "arivera.student@school.edu",
+      "quantity": 2,
+      "checkoutDate": "2026-06-10",
+      "dueDate": "2026-06-17",
+      "returnedDate": null,
+      "status": "overdue",
+      "alertsSent": 1,
+      "lastAlertDate": "2026-06-18"
+    },
+    {
+      "id": "chk-2",
+      "componentId": "comp-2",
+      "componentName": "Raspberry Pi 4 Model B (4GB RAM)",
+      "studentName": "Sophia Chen",
+      "studentEmail": "schen.student@school.edu",
+      "quantity": 1,
+      "checkoutDate": "2026-06-12",
+      "dueDate": "2026-06-26",
+      "returnedDate": null,
+      "status": "active",
+      "alertsSent": 0,
+      "lastAlertDate": null
+    },
+    {
+      "id": "chk-3",
+      "componentId": "comp-1",
+      "componentName": "Arduino Uno R3 Starter Microcontroller",
+      "studentName": "Marcus Thorne",
+      "studentEmail": "mthorne.student@school.edu",
+      "quantity": 2,
+      "checkoutDate": "2026-06-05",
+      "dueDate": "2026-06-12",
+      "returnedDate": "2026-06-11",
+      "status": "returned",
+      "alertsSent": 0,
+      "lastAlertDate": null
+    },
+    {
+      "id": "chk-4",
+      "componentId": "comp-5",
+      "componentName": "11.1V 3S 2200mAh LiPo Battery Pack",
+      "studentName": "Emily Watson",
+      "studentEmail": "ewatson.student@school.edu",
+      "quantity": 1,
+      "checkoutDate": "2026-06-14",
+      "dueDate": "2026-06-21",
+      "returnedDate": null,
+      "status": "overdue",
+      "alertsSent": 0,
+      "lastAlertDate": null
+    },
+    {
+      "id": "chk-5",
+      "componentId": "comp-6",
+      "componentName": "Screwdriver and Hardware Assembly Kit",
+      "studentName": "Lucas Miller",
+      "studentEmail": "lmiller.student@school.edu",
+      "quantity": 1,
+      "checkoutDate": "2026-06-15",
+      "dueDate": "2026-06-22",
+      "returnedDate": null,
+      "status": "active",
+      "alertsSent": 0,
+      "lastAlertDate": null
+    }
+  ],
+  "logs": [
+    {
+      "id": "log-1",
+      "timestamp": "2026-06-10T14:30:00.000Z",
+      "type": "checkout",
+      "message": "Alex Rivera checked out 2x Arduino Uno R3 Starter Microcontroller. Due: 2026-06-17."
+    },
+    {
+      "id": "log-2",
+      "timestamp": "2026-06-11T10:15:00.000Z",
+      "type": "return",
+      "message": "Marcus Thorne safely returned 2x Arduino Uno R3 Starter Microcontroller."
+    },
+    {
+      "id": "log-3",
+      "timestamp": "2026-06-18T09:00:00.000Z",
+      "type": "alert",
+      "message": "Automated alert drafted to Alex Rivera (arivera.student@school.edu) for Arduino Uno R3 Starter Microcontroller."
+    }
+  ]
+}

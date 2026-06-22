@@ -1,0 +1,6 @@
+{
+  "name": "Robotics Lab Component Tracker",
+  "description": "An interactive management system for school robotics labs to track inventory, log student chechouts, manage return deadlines, and generate email alerts for overdue items.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
